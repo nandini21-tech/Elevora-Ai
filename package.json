@@ -1,0 +1,25 @@
+{
+  "name": "wetransfer_css_2026-10-10_1905",
+  "version": "1.0.0",
+  "description": "**Elevora AI** is an advanced developer platform engineered for programmers, job seekers, and computer science students. Built with a sleek dark cyberpunk aesthetic, it unifies intelligent code analysis, dynamic AI goal roadmap generation, ATS-optimized AI resume synthesis, multi-language cheat sheet PDF library with custom file uploads, and skill-building quizzes with live level-adaptive question generation.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "better-sqlite3": "^11.10.0",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.7",
+    "express": "^5.3.0",
+    "sqlite3": "^6.0.1"
+  },
+  "allowScripts": {
+    "sqlite3@6.0.1": true,
+    "better-sqlite3@13.0.3": true
+  }
+}

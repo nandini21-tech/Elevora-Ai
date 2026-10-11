@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elevora — All-in-One AI Developer Hub & Coding Companion</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            void: '#070a12',
+            surface: '#0d121f',
+            card: '#121929',
+            cardHover: '#172238',
+            cyanAccent: '#06b6d4',
+            emeraldAccent: '#10b981',
+            purpleAccent: '#8b5cf6',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- External Libraries -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-[#070a12] text-slate-100 min-h-screen flex flex-col antialiased selection:bg-cyan-500 selection:text-black">
+
+  <!-- ================= AUTHENTICATION / LOGIN VIEW (Req 2 & 6) ================= -->
+  <div id="auth-view" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#070a12] via-[#0d1322] to-[#070a12]">
+    <div class="w-full max-w-md">
+      
+      <!-- Logo & Branding -->
+      <div class="text-center mb-6">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-purple-600 flex items-center justify-center shadow-xl shadow-cyan-500/20 mx-auto mb-3">
+          <i data-lucide="terminal" class="w-7 h-7 text-white"></i>
+        </div>
+        <h1 class="text-2xl font-black tracking-tight text-white">Elevora<span class="text-cyan-400">AI</span></h1>
+        <p class="text-xs text-slate-400 mt-1">All-in-One AI Developer Hub & Coding Companion</p>
+      </div>
+
+      <!-- Login / Signup Card -->
+      <div class="glass-panel rounded-3xl p-6 sm:p-8 border border-slate-700/80 shadow-2xl relative overflow-hidden">
+        
+        <!-- Tab Switcher -->
+        <div class="flex items-center p-1 bg-slate-900/90 rounded-xl border border-slate-800 mb-6 text-xs font-semibold">
+          <button id="btn-tab-signin" class="flex-1 py-2 rounded-lg bg-cyan-600 text-white transition">Sign In</button>
+          <button id="btn-tab-signup" class="flex-1 py-2 rounded-lg text-slate-400 hover:text-white transition">Create Account</button>
+        </div>
+
+        <!-- Sign In Form -->
+        <form id="form-login" class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Developer Email</label>
+            <div class="relative">
+              <i data-lucide="mail" class="w-4 h-4 text-slate-500 absolute left-3 top-3"></i>
+              <input type="email" id="login-email" class="w-full bg-slate-950 border border-slate-700 rounded-xl pl-9 pr-3 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400" placeholder="pretham.dev@elevora.ai" value="pretham.dev@elevora.ai" required>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label class="block text-xs font-semibold text-slate-300">Password</label>
+              <a href="#" class="text-[11px] text-cyan-400 hover:underline">Forgot?</a>
+            </div>
+            <div class="relative">
+              <i data-lucide="lock" class="w-4 h-4 text-slate-500 absolute left-3 top-3"></i>
+              <input type="password" id="login-password" class="w-full bg-slate-950 border border-slate-700 rounded-xl pl-9 pr-3 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400" placeholder="••••••••••••" value="coder1234" required>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between text-xs text-slate-400">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" checked class="rounded border-slate-700 bg-slate-900 text-cyan-500 focus:ring-0">
+              <span>Remember me</span>
+            </label>
+            <span class="text-[10px] text-emerald-400 font-mono flex items-center gap-1">
+              <i data-lucide="database" class="w-3 h-3"></i> SQLite Secure Auth
+            </span>
+          </div>
+
+          <button type="submit" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-xs font-bold transition shadow-lg shadow-cyan-600/30 flex items-center justify-center gap-2">
+            <span>Sign In to Elevora</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </form>
+
+        <!-- Sign Up Form (Hidden by default) -->
+        <form id="form-register" class="space-y-4 hidden">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name</label>
+            <div class="relative">
+              <i data-lucide="user" class="w-4 h-4 text-slate-500 absolute left-3 top-3"></i>
+              <input type="text" id="reg-name" class="w-full bg-slate-950 border border-slate-700 rounded-xl pl-9 pr-3 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400" placeholder="Pretham">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Developer Email</label>
+            <div class="relative">
+              <i data-lucide="mail" class="w-4 h-4 text-slate-500 absolute left-3 top-3"></i>
+              <input type="email" id="reg-email" class="w-full bg-slate-950 border border-slate-700 rounded-xl pl-9 pr-3 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400" placeholder="you@domain.com">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Primary Specialty</label>
+            <select id="reg-role" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
+              <option value="Senior Full Stack Engineer">Full Stack Engineer</option>
+              <option value="Backend Systems Architect">Backend Systems / Distributed</option>
+              <option value="Frontend UI/UX Specialist">Frontend & Modern React</option>
+              <option value="AI / LLM Application Developer">AI & Machine Learning</option>
+              <option value="Competitive Programmer & DSA">DSA & Competitive Coding</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Password</label>
+            <div class="relative">
+              <i data-lucide="lock" class="w-4 h-4 text-slate-500 absolute left-3 top-3"></i>
+              <input type="password" id="reg-pass" class="w-full bg-slate-950 border border-slate-700 rounded-xl pl-9 pr-3 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400" placeholder="Create secure password">
+            </div>
+          </div>
+
+          <button type="submit" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-xs font-bold transition shadow-lg shadow-cyan-600/30 flex items-center justify-center gap-2">
+            <span>Create Developer Profile</span>
+            <i data-lucide="check" class="w-4 h-4"></i>
+          </button>
+        </form>
+
+        <!-- Divider -->
+        <div class="relative my-5">
+          <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-800"></div></div>
+          <div class="relative flex justify-center text-[10px] uppercase font-mono tracking-wider"><span class="bg-[#121929] px-2 text-slate-500">Fast Demo Access</span></div>
+        </div>
+
+        <!-- 1-Click Instant Demo Login Button -->
+        <button id="btn-demo-login" class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-cyan-500/40 text-cyan-300 text-xs font-semibold transition flex items-center justify-center gap-2 group">
+          <span class="text-amber-400">⚡</span>
+          <span>1-Click Demo Developer Login (Pretham)</span>
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MAIN APP VIEW (GATED BY LOGIN) ================= -->
+  <div id="app-view" class="hidden flex-1 flex flex-col">
+
+    <!-- ================= TOP NAVIGATION BAR (Req 2) ================= -->
+    <header class="glass-nav sticky top-0 z-40 border-b border-slate-800/80 px-4 lg:px-8 py-3">
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        
+        <!-- Brand Logo -->
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-purple-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+            <i data-lucide="terminal" class="w-5 h-5 text-white"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-extrabold text-lg tracking-tight text-white">Elevora<span class="text-cyan-400">AI</span></span>
+              <span class="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-cyan-950/80 text-cyan-400 border border-cyan-800/60 font-mono">v3.0</span>
+            </div>
+            <p class="text-[11px] text-slate-400 hidden sm:block">AI Roadmaps • Day/Week/Month Tracker • Dynamic Quizzes • PDF Hub</p>
+          </div>
+        </div>
+
+        <!-- Quick Stats & Status Bar -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          
+          <!-- Daily Streak Badge -->
+          <div class="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono text-amber-300" title="Active Daily Streak">
+            <span>🔥</span>
+            <span id="stat-header-streak" class="font-bold">7d</span>
+          </div>
+
+          <!-- Goals Progress Badge -->
+          <div class="hidden md:flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono text-emerald-300" title="Goals Completed">
+            <span>🎯</span>
+            <span id="stat-header-goals" class="font-bold">2/4</span>
+          </div>
+
+          <!-- XP Badge -->
+          <div class="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono text-purple-300" title="Skill XP Level">
+            <span>⚡</span>
+            <span id="stat-header-xp" class="font-bold">250 XP</span>
+          </div>
+
+          <!-- AI Engine Status Pill -->
+          <div id="ai-status-indicator" class="flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-700 cursor-pointer hover:border-cyan-500/40 transition">
+            <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+            <span class="text-xs font-medium text-cyan-300">Free AI Engine</span>
+          </div>
+
+          <!-- Quick Action Launcher Trigger -->
+          <button id="btn-open-intent" class="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-xl bg-purple-950/40 hover:bg-purple-900/60 border border-purple-500/40 text-purple-300 text-xs font-semibold transition" title="What do you want to do?">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+            <span>Actions</span>
+          </button>
+
+          <!-- Settings Cog -->
+          <button id="btn-open-settings" class="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-400 hover:text-white transition" title="AI Settings & API Key">
+            <i data-lucide="settings" class="w-4 h-4"></i>
+          </button>
+
+          <!-- User Profile & Logout -->
+          <div id="header-user-profile" class="flex items-center gap-2 pl-2 border-l border-slate-800">
+            <div class="hidden sm:block text-right">
+              <div id="header-user-name" class="text-xs font-bold text-white leading-tight">Pretham</div>
+              <div id="header-user-role" class="text-[10px] text-cyan-400 font-mono">Senior Full Stack</div>
+            </div>
+            <button id="btn-user-logout" class="p-2 rounded-xl bg-slate-900 hover:bg-rose-950/60 border border-slate-800 hover:border-rose-800/60 text-slate-400 hover:text-rose-400 transition" title="Logout">
+              <i data-lucide="log-out" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Main Navigation Tabs -->
+      <div class="max-w-7xl mx-auto mt-3 pt-2 border-t border-slate-800/60 flex items-center gap-1 sm:gap-2 overflow-x-auto no-scrollbar">
+        
+        <button class="nav-tab-btn flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-cyan-500/15 text-cyan-400 border border-cyan-500/30 transition whitespace-nowrap" data-tab="dashboard">
+          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+          <span>Dashboard</span>
+        </button>
+
+        <button class="nav-tab-btn flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent transition whitespace-nowrap" data-tab="assistant">
+          <i data-lucide="code-2" class="w-4 h-4"></i>
+          <span>AI Code Assistant</span>
+        </button>
+
+        <button class="nav-tab-btn flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent transition whitespace-nowrap" data-tab="goals">
+          <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+          <span>Goal & Roadmap Tracker</span>
+        </button>
+
+        <button class="nav-tab-btn flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent transition whitespace-nowrap" data-tab="resume">
+          <i data-lucide="file-badge" class="w-4 h-4"></i>
+          <span>AI Resume Builder</span>
+        </button>
+
+        <button class="nav-tab-btn flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent transition whitespace-nowrap" data-tab="pdf-library">
+          <i data-lucide="book-open" class="w-4 h-4"></i>
+          <span>Cheat Sheets & PDF Hub</span>
+        </button>
+
+        <button class="nav-tab-btn flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent transition whitespace-nowrap" data-tab="skills">
+          <i data-lucide="compass" class="w-4 h-4"></i>
+          <span>Skill Building & Dynamic Quiz</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ================= MAIN CONTENT WRAPPER ================= -->
+    <main class="flex-1 max-w-7xl mx-auto w-full px-4 lg:px-8 py-6">
+
+      <!-- ================= TAB 0: DASHBOARD ================= -->
+      <section id="tab-dashboard" class="tab-pane space-y-6">
+        
+        <!-- Welcome Banner -->
+        <div class="glass-card rounded-3xl p-6 border border-slate-800/90 relative overflow-hidden bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-slate-900/90">
+          <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div>
+              <div class="flex items-center gap-2 mb-1.5">
+                <span class="text-xs font-mono text-cyan-400 bg-cyan-950/60 px-2.5 py-0.5 rounded-full border border-cyan-800/50">Elevora Headquarters</span>
+                <span class="text-xs text-slate-400">• Ready for your next milestone</span>
+              </div>
+              <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">
+                Welcome back, <span id="dashboard-greeting-name" class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">Pretham</span>! 👋
+              </h2>
+              <p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl">
+                Your integrated developer command center. Generate 30-day AI roadmaps, track daily milestones, solve coding doubts with AI, and test your skills with dynamic quizzes.
+              </p>
+            </div>
+
+            <!-- "What do you want to do?" Big Button -->
+            <button id="btn-dashboard-open-intent" class="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-cyan-600 via-indigo-600 to-purple-600 hover:from-cyan-500 hover:to-purple-500 text-white text-xs font-bold transition shadow-xl shadow-cyan-600/25 flex items-center gap-2 shrink-0">
+              <i data-lucide="sparkles" class="w-4 h-4"></i>
+              <span>What do you want to do today?</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Launcher Strip -->
+        <div>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+            <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-400"></i>
+            <span>Quick Launcher — Choose an Activity</span>
+          </h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            
+            <!-- Action 1: Code Assistant -->
+            <div data-goto-tab="assistant" class="glass-card p-4 rounded-2xl border border-slate-800 hover:border-cyan-500/50 cursor-pointer group transition">
+              <div class="flex items-center justify-between mb-3">
+                <span class="p-2.5 rounded-xl bg-cyan-950/60 border border-cyan-800/50 text-cyan-400 group-hover:scale-110 transition">
+                  <i data-lucide="code-2" class="w-5 h-5"></i>
+                </span>
+                <span class="text-[10px] font-mono text-cyan-400">Upload & Debug</span>
+              </div>
+              <h4 class="text-sm font-bold text-white group-hover:text-cyan-300 transition">Explain & Fix Code</h4>
+              <p class="text-[11px] text-slate-400 mt-1">Upload code files, inspect syntax, find bugs, and analyze Big-O complexity.</p>
+            </div>
+
+            <!-- Action 2: Goal Tracker -->
+            <div data-goto-tab="goals" class="glass-card p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/50 cursor-pointer group transition">
+              <div class="flex items-center justify-between mb-3">
+                <span class="p-2.5 rounded-xl bg-emerald-950/60 border border-emerald-800/50 text-emerald-400 group-hover:scale-110 transition">
+                  <i data-lucide="target" class="w-5 h-5"></i>
+                </span>
+                <span class="text-[10px] font-mono text-emerald-400">30-Day Roadmaps</span>
+              </div>
+              <h4 class="text-sm font-bold text-white group-hover:text-emerald-300 transition">Day / Week / Month Tracker</h4>
+              <p class="text-[11px] text-slate-400 mt-1">AI generates complete day-by-day plans. Check off daily milestones and keep streak alive.</p>
+            </div>
+
+            <!-- Action 3: Resume Builder -->
+            <div data-goto-tab="resume" class="glass-card p-4 rounded-2xl border border-slate-800 hover:border-purple-500/50 cursor-pointer group transition">
+              <div class="flex items-center justify-between mb-3">
+                <span class="p-2.5 rounded-xl bg-purple-950/60 border border-purple-800/50 text-purple-400 group-hover:scale-110 transition">
+                  <i data-lucide="file-badge" class="w-5 h-5"></i>
+                </span>
+                <span class="text-[10px] font-mono text-purple-400">ATS Resume</span>
+              </div>
+              <h4 class="text-sm font-bold text-white group-hover:text-purple-300 transition">AI Resume Builder</h4>
+              <p class="text-[11px] text-slate-400 mt-1">Generate high-impact action-verb metrics, preview live, and download PDF.</p>
+            </div>
+
+            <!-- Action 4: Cheat Sheets & Uploads -->
+            <div data-goto-tab="pdf-library" class="glass-card p-4 rounded-2xl border border-slate-800 hover:border-blue-500/50 cursor-pointer group transition">
+              <div class="flex items-center justify-between mb-3">
+                <span class="p-2.5 rounded-xl bg-blue-950/60 border border-blue-800/50 text-blue-400 group-hover:scale-110 transition">
+                  <i data-lucide="book-open" class="w-5 h-5"></i>
+                </span>
+                <span class="text-[10px] font-mono text-blue-400">Upload & Read</span>
+              </div>
+              <h4 class="text-sm font-bold text-white group-hover:text-blue-300 transition">PDF Cheat Sheet Hub</h4>
+              <p class="text-[11px] text-slate-400 mt-1">Upload your own PDFs, read in-app, or download reference cheat sheets.</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Dashboard Grid: Goal Tracker on Left, Quick Sandbox on Right -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          
+          <!-- Left Column: Goal Tracker Live Widget (7 Cols) -->
+          <div class="lg:col-span-7 glass-card rounded-2xl p-5 border border-slate-800 space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+              <div class="flex items-center gap-2.5">
+                <div class="p-2 rounded-xl bg-emerald-950/60 text-emerald-400 border border-emerald-800/50">
+                  <i data-lucide="check-circle" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <h3 class="text-sm font-bold text-white">Active Roadmap Milestones</h3>
+                  <p class="text-[11px] text-slate-400">Check off daily tasks directly here</p>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <button onclick="document.getElementById('btn-open-add-goal')?.click()" class="px-3 py-1.5 rounded-lg bg-cyan-600/20 hover:bg-cyan-600 text-cyan-300 hover:text-white border border-cyan-500/30 text-xs font-semibold transition flex items-center gap-1">
+                  <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                  <span>New Goal</span>
+                </button>
+                <button onclick="window.app?.switchTab?.('goals')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition">
+                  Trackers →
+                </button>
+              </div>
+            </div>
+
+            <!-- Dynamic Goals Widget Target -->
+            <div id="dashboard-goals-widget">
+              <!-- Rendered dynamically by GoalTracker -->
+            </div>
+          </div>
+
+          <!-- Right Column: Pro Coding Tip & Quick Sandbox Tester (5 Cols) -->
+          <div class="lg:col-span-5 space-y-4">
+            
+            <!-- Daily AI Pro Tip Card -->
+            <div class="glass-card rounded-2xl p-5 border border-slate-800 space-y-2.5">
+              <div class="flex items-center gap-2 text-amber-400 text-xs font-bold">
+                <i data-lucide="lightbulb" class="w-4 h-4"></i>
+                <span>Elevora Pro Tip of the Day</span>
+              </div>
+              <h4 class="text-sm font-bold text-white">Avoid Python Mutable Defaults</h4>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Writing <code class="bg-slate-800 text-cyan-300 px-1 py-0.5 rounded font-mono text-[11px]">def func(items=[])</code> creates a shared list across every call because default values are evaluated once at definition time! Always use <code class="bg-slate-800 text-cyan-300 px-1 py-0.5 rounded font-mono text-[11px]">items=None</code> and assign inside the function.
+              </p>
+            </div>
+
+            <!-- Mini Quick Code Tester Launcher -->
+            <div class="glass-card rounded-2xl p-5 border border-slate-800 space-y-3">
+              <div class="flex items-center justify-between">
+                <h4 class="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
+                  <span>Quick Code Diagnostic Launcher</span>
+                </h4>
+                <select id="dash-quick-lang" class="bg-slate-900 border border-slate-700 rounded-lg px-2 py-0.5 text-[11px] text-cyan-300 focus:outline-none">
+                  <option value="python">Python</option>
+                  <option value="javascript">JavaScript</option>
+                  <option value="java">Java</option>
+                  <option value="cpp">C++</option>
+                </select>
+              </div>
+
+              <textarea id="dash-quick-code" rows="4" class="w-full bg-[#080d16] border border-slate-800 rounded-xl p-3 font-mono text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-cyan-400" placeholder="# Paste a snippet to test immediately in Code Assistant...
+def divide(a, b):
+    return a / b"></textarea>
+
+              <button id="btn-dash-test-code" class="w-full py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-lg shadow-cyan-600/20">
+                <i data-lucide="search" class="w-3.5 h-3.5"></i>
+                <span>Open & Debug in Code Assistant</span>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================= TAB 1: AI CODE ASSISTANT & SOLVER ================= -->
+      <section id="tab-assistant" class="tab-pane hidden space-y-4">
+        
+        <!-- Assistant Subtab Switcher -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-1.5 rounded-2xl bg-slate-900/80 border border-slate-800">
+          <div class="flex items-center gap-2">
+            <button id="btn-subtab-solver" class="px-4 py-2 rounded-xl text-xs font-bold bg-cyan-600 text-white shadow-md transition flex items-center gap-2">
+              <i data-lucide="bug" class="w-4 h-4"></i>
+              <span>Code Error Solver & Explainer</span>
+            </button>
+            <button id="btn-subtab-chatgpt" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-2">
+              <i data-lucide="message-square" class="w-4 h-4 text-purple-400"></i>
+              <span>Ask Coding Doubts (Elevora AI)</span>
+            </button>
+          </div>
+          <div class="hidden sm:flex items-center gap-2 pr-3">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span class="text-[11px] text-emerald-300 font-mono">100% Free AI Backend Active</span>
+          </div>
+        </div>
+
+        <!-- VIEW A: Code Solver & Explainer -->
+        <div id="subtab-solver-view" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          
+          <!-- Left Panel: Code Input & Controls (7 Cols) -->
+          <div class="lg:col-span-7 space-y-4">
+            
+            <!-- Drop & Upload Bar -->
+            <div id="code-drop-zone" class="glass-card rounded-2xl p-4 border border-dashed border-slate-700 hover:border-cyan-500/50 transition flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <div class="p-2.5 rounded-xl bg-cyan-950/40 text-cyan-400 border border-cyan-800/40">
+                  <i data-lucide="upload-cloud" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <h4 class="text-xs font-bold text-white">Upload Code File or Drag & Drop</h4>
+                  <p class="text-[11px] text-slate-400">Supports .py, .java, .js, .ts, .cpp, .sql, .go, .html, .css</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 w-full sm:w-auto">
+                <label class="cursor-pointer px-3.5 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-semibold shadow-sm transition flex items-center justify-center gap-1.5 w-full sm:w-auto">
+                  <i data-lucide="folder-open" class="w-3.5 h-3.5"></i>
+                  <span>Choose File</span>
+                  <input type="file" id="code-file-upload" class="hidden" accept=".py,.java,.js,.jsx,.ts,.tsx,.cpp,.c,.cs,.go,.rs,.sql,.html,.css,.json,.txt">
+                </label>
+              </div>
+            </div>
+
+            <!-- Code Editor Card -->
+            <div class="code-window border border-slate-800 shadow-2xl">
+              <div class="code-window-header flex flex-wrap gap-2 items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="window-dots">
+                    <div class="dot dot-red"></div>
+                    <div class="dot dot-yellow"></div>
+                    <div class="dot dot-green"></div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <select id="code-language" class="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-cyan-300 font-mono focus:outline-none focus:border-cyan-400">
+                      <option value="python">Python 3</option>
+                      <option value="javascript">JavaScript (ES6+)</option>
+                      <option value="java">Java 21</option>
+                      <option value="typescript">TypeScript</option>
+                      <option value="cpp">C++ (STL)</option>
+                      <option value="sql">SQL</option>
+                      <option value="html">HTML5</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Preloaded Samples & Clear -->
+                <div class="flex items-center gap-2">
+                  <select id="sample-snippets" class="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-xs text-slate-300 focus:outline-none focus:border-cyan-400">
+                    <option value="">Load Sample Snippet...</option>
+                    <option value="python_bug">Buggy Python Code (Indent/Colon)</option>
+                    <option value="js_async_bug">Faulty JS Async/Await & Promise</option>
+                    <option value="java_bug">Buggy Java String & Nulls</option>
+                    <option value="cpp_clean">Clean C++ Binary Search</option>
+                  </select>
+                  <button id="btn-clear-editor" class="text-slate-400 hover:text-rose-400 p-1.5 rounded-lg hover:bg-slate-800 transition" title="Clear Editor">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Editor Body with line numbers -->
+              <div class="editor-with-lines min-h-[340px] max-h-[460px] overflow-hidden bg-[#090e18]">
+                <div id="line-numbers" class="line-numbers font-mono overflow-hidden"></div>
+                <textarea id="code-input" class="editor-textarea h-[340px]" placeholder="# Paste or upload your code here to explain logic or find bugs...
+def calculate_metrics(items):
+    total = 0
+    for i in range(len(items)):
+        total += items[i]
+    return total"></textarea>
+              </div>
+            </div>
+
+            <!-- Primary Action Button -->
+            <button id="btn-action-combined" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-600 via-indigo-600 to-purple-600 hover:from-cyan-500 hover:to-purple-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-xl shadow-cyan-600/30 transition transform hover:-translate-y-0.5">
+              <i data-lucide="sparkles" class="w-4 h-4 text-cyan-200"></i>
+              <span>🔍 Check Errors & Explain Code (Elevora AI Engine)</span>
+            </button>
+
+            <!-- Quick Action Buttons -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              <button id="btn-action-explain" class="p-3 rounded-xl bg-gradient-to-r from-blue-950/60 to-cyan-950/60 hover:from-blue-900/80 hover:to-cyan-900/80 border border-cyan-500/30 hover:border-cyan-400 text-cyan-300 font-semibold text-xs flex items-center justify-center gap-2 shadow-lg transition">
+                <i data-lucide="book-open" class="w-4 h-4"></i>
+                <span>Explain Code</span>
+              </button>
+
+              <button id="btn-action-errors" class="p-3 rounded-xl bg-gradient-to-r from-rose-950/60 to-red-950/60 hover:from-rose-900/80 hover:to-red-900/80 border border-rose-500/30 hover:border-rose-400 text-rose-300 font-semibold text-xs flex items-center justify-center gap-2 shadow-lg transition">
+                <i data-lucide="bug" class="w-4 h-4"></i>
+                <span>Find Errors & Fix</span>
+              </button>
+
+              <button id="btn-action-optimize" class="p-3 rounded-xl bg-gradient-to-r from-purple-950/60 to-indigo-950/60 hover:from-purple-900/80 hover:to-indigo-900/80 border border-purple-500/30 hover:border-purple-400 text-purple-300 font-semibold text-xs flex items-center justify-center gap-2 shadow-lg transition">
+                <i data-lucide="zap" class="w-4 h-4"></i>
+                <span>Optimize Code</span>
+              </button>
+
+              <button id="btn-action-test" class="p-3 rounded-xl bg-gradient-to-r from-emerald-950/60 to-teal-950/60 hover:from-emerald-900/80 hover:to-teal-900/80 border border-emerald-500/30 hover:border-emerald-400 text-emerald-300 font-semibold text-xs flex items-center justify-center gap-2 shadow-lg transition">
+                <i data-lucide="test-tube" class="w-4 h-4"></i>
+                <span>Generate Tests</span>
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Right Panel: AI Chat Output (5 Cols) -->
+          <div class="lg:col-span-5 flex flex-col h-[620px] glass-card rounded-2xl border border-slate-800 shadow-2xl overflow-hidden">
+            <div class="p-3.5 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <div class="w-7 h-7 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center border border-cyan-500/30">
+                  <i data-lucide="bot" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <h3 class="text-xs font-bold text-white flex items-center gap-2">
+                    <span>Elevora AI Diagnostic Assistant</span>
+                    <span class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800">Gemini 3.8 Flash Active</span>
+                  </h3>
+                  <span class="text-[10px] text-slate-400">Contextual code explanation, bug fixer & doubt chatbot</span>
+                </div>
+              </div>
+              <button id="btn-clear-chat" class="text-slate-400 hover:text-rose-400 text-xs p-1.5 rounded-lg hover:bg-slate-800 transition" title="Clear chat">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+
+            <div id="chat-history" class="flex-1 p-4 overflow-y-auto space-y-4">
+              <div class="p-4 rounded-xl bg-slate-900/70 border border-slate-800 text-slate-300 text-xs space-y-2">
+                <div class="flex items-center gap-2 text-cyan-400 font-bold">
+                  <i data-lucide="sparkles" class="w-4 h-4"></i>
+                  <span>Welcome to Elevora AI Code Solver & Chatbot!</span>
+                </div>
+                <p>Upload a file or write code on the left, then click one of the quick actions or ask any doubt below:</p>
+                <ul class="list-disc ml-4 space-y-1 text-slate-400 text-[11px]">
+                  <li><strong class="text-cyan-300">🔍 Check Errors & Explain:</strong> Line-by-line bugs, step-by-step logic, Big-O complexity & complete fix.</li>
+                  <li><strong class="text-rose-300">🐞 Find Errors:</strong> Pinpoint bugs, edge-case traps, and generate fixed code.</li>
+                  <li><strong class="text-purple-300">⚡ Optimize:</strong> Algorithmic speedup & clean code patterns.</li>
+                  <li><strong class="text-emerald-300">🧪 Generate Tests:</strong> Automated unit test suites.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="p-3 bg-slate-900/90 border-t border-slate-800 space-y-2">
+              <!-- Quick Coding Doubt Chips -->
+              <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-[11px]">
+                <span class="text-slate-500 text-[10px] font-mono uppercase tracking-wider shrink-0 font-semibold">Doubts:</span>
+                <button type="button" class="quick-doubt-chip px-2.5 py-1 rounded-lg bg-slate-800/90 hover:bg-cyan-950 text-slate-300 hover:text-cyan-300 border border-slate-700 hover:border-cyan-500/40 shrink-0 transition" data-doubt="Explain the step-by-step logic and execution flow of this code in simple terms.">
+                  💡 Logic Flow
+                </button>
+                <button type="button" class="quick-doubt-chip px-2.5 py-1 rounded-lg bg-slate-800/90 hover:bg-rose-950 text-slate-300 hover:text-rose-300 border border-slate-700 hover:border-rose-500/40 shrink-0 transition" data-doubt="What hidden bugs, off-by-one errors, or edge cases could break this code?">
+                  🐞 Edge Cases
+                </button>
+                <button type="button" class="quick-doubt-chip px-2.5 py-1 rounded-lg bg-slate-800/90 hover:bg-purple-950 text-slate-300 hover:text-purple-300 border border-slate-700 hover:border-purple-500/40 shrink-0 transition" data-doubt="What is the Big-O Time and Space Complexity, and how can we optimize it?">
+                  ⚡ Big-O & Speed
+                </button>
+                <button type="button" class="quick-doubt-chip px-2.5 py-1 rounded-lg bg-slate-800/90 hover:bg-emerald-950 text-slate-300 hover:text-emerald-300 border border-slate-700 hover:border-emerald-500/40 shrink-0 transition" data-doubt="How can I rewrite this using modern best practices and clean code?">
+                  ✨ Clean Refactor
+                </button>
+              </div>
+
+              <!-- Input Bar -->
+              <div class="flex items-center gap-2">
+                <input type="text" id="user-chat-input" class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400" placeholder="Ask anything about the code, syntax, logic or debugging doubts...">
+                <button id="btn-send-chat" class="p-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white transition flex items-center justify-center shadow-lg shadow-cyan-600/30" title="Send question">
+                  <i data-lucide="send" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- VIEW B: ChatGPT Doubt Solver -->
+        <div id="subtab-doubt-view" class="hidden glass-card rounded-3xl border border-slate-800 shadow-2xl p-6 space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-800">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-purple-600 via-indigo-600 to-cyan-500 flex items-center justify-center text-white shadow-lg shadow-purple-600/30">
+                <i data-lucide="bot" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                  <span>Elevora AI Developer Doubt Solver</span>
+                  <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-purple-950/80 text-purple-300 border border-purple-800/60">Free AI</span>
+                </h3>
+                <p class="text-xs text-slate-400">Ask any programming concept, algorithmic doubt, interview problem, or architecture question.</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button id="btn-clear-doubt-chat" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-rose-950/40 text-slate-400 hover:text-rose-400 border border-slate-800 hover:border-rose-800/40 text-xs font-semibold transition flex items-center gap-1.5">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                <span>Clear History</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Suggestion Prompt Pills -->
+          <div class="space-y-2">
+            <span class="text-[11px] font-mono text-slate-400 uppercase tracking-wider block font-semibold">Popular Coding Doubts (Click to Ask):</span>
+            <div class="flex flex-wrap gap-2" id="doubt-suggestion-container">
+              <button class="doubt-suggestion-pill px-3 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/40 text-xs text-slate-300 hover:text-purple-300 transition" data-doubt="How does async/await work under the hood in JavaScript? Explain the Event Loop and Microtask Queue with code.">
+                ⚡ How does async/await work under the hood?
+              </button>
+              <button class="doubt-suggestion-pill px-3 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/40 text-xs text-slate-300 hover:text-purple-300 transition" data-doubt="How do I reverse a Singly Linked List iteratively and recursively in Python with Big-O complexity?">
+                🧩 Reverse a Linked List (Iterative & Recursive)
+              </button>
+              <button class="doubt-suggestion-pill px-3 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/40 text-xs text-slate-300 hover:text-purple-300 transition" data-doubt="What is the architectural difference between SQL and NoSQL (MongoDB/PostgreSQL)? When should I choose which?">
+                🗄️ SQL vs NoSQL Architectural Comparison
+              </button>
+              <button class="doubt-suggestion-pill px-3 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/40 text-xs text-slate-300 hover:text-purple-300 transition" data-doubt="Explain Dynamic Programming: what is the difference between Memoization (Top-Down) and Tabulation (Bottom-Up)? Give a code example.">
+                💡 DP: Memoization vs Tabulation
+              </button>
+            </div>
+          </div>
+
+          <!-- Chat Stream -->
+          <div id="doubt-chat-history" class="min-h-[380px] max-h-[560px] overflow-y-auto p-4 rounded-2xl bg-[#080d16] border border-slate-800/80 space-y-4">
+            <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 text-slate-300 text-xs space-y-2">
+              <div class="flex items-center gap-2 text-purple-400 font-bold">
+                <i data-lucide="sparkles" class="w-4 h-4"></i>
+                <span>Elevora AI Developer Doubt Solver is Ready!</span>
+              </div>
+              <p class="text-slate-400 leading-relaxed">
+                Ask any programming concept, language quirk, debugging question, or interview algorithm. I will provide comprehensive conceptual explanations, diagrams, time/space complexity analysis, and runnable clean code blocks!
+              </p>
+            </div>
+          </div>
+
+          <!-- Doubt Input Box -->
+          <div class="p-3 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-2">
+            <div class="flex items-center gap-2">
+              <textarea id="doubt-user-input" rows="2" class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-400 resize-none font-sans" placeholder="Ask your coding doubt here (e.g. 'Explain binary search with edge cases', 'How do closures work in JS?')... Press Enter to send"></textarea>
+              <button id="btn-send-doubt" class="px-5 py-3 rounded-xl bg-gradient-to-r from-purple-600 via-indigo-600 to-cyan-600 hover:from-purple-500 hover:to-cyan-500 text-white font-bold text-xs transition flex items-center justify-center gap-2 shadow-lg shadow-purple-600/30 shrink-0">
+                <i data-lucide="send" class="w-4 h-4"></i>
+                <span>Ask AI</span>
+              </button>
+            </div>
+            <div class="flex items-center justify-between text-[11px] text-slate-500 px-1">
+              <label class="flex items-center gap-2 cursor-pointer select-none">
+                <input type="checkbox" id="doubt-include-code" checked class="rounded border-slate-700 bg-slate-900 text-purple-500 focus:ring-0">
+                <span class="text-slate-400">Include editor code as context</span>
+              </label>
+              <span>Press Enter to send • Shift+Enter for new line</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TAB 2: GOAL TRACKER (Req 1, 3, 7) ================= -->
+      <section id="tab-goals" class="tab-pane hidden space-y-6">
+        
+        <!-- Top Stats Grid -->
+        <div id="goal-stats">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <!-- TRACKER VIEW SWITCHER (Req 7: Day, Week, Month, All) -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-1.5 rounded-2xl bg-slate-900/80 border border-slate-800">
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <button class="tracker-view-btn px-4 py-2 rounded-xl text-xs font-bold bg-cyan-600 text-white shadow-md transition flex items-center gap-2" data-view="all">
+              <i data-lucide="layout-grid" class="w-4 h-4"></i>
+              <span>All Goals & Roadmaps</span>
+            </button>
+            <button class="tracker-view-btn px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-2" data-view="day">
+              <i data-lucide="sun" class="w-4 h-4 text-amber-400"></i>
+              <span>Day Tracker (Today's Focus)</span>
+            </button>
+            <button class="tracker-view-btn px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-2" data-view="week">
+              <i data-lucide="calendar" class="w-4 h-4 text-cyan-400"></i>
+              <span>Week Tracker (7-Day Sprint)</span>
+            </button>
+            <button class="tracker-view-btn px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-2" data-view="month">
+              <i data-lucide="calendar-days" class="w-4 h-4 text-purple-400"></i>
+              <span>Monthly Tracker (30-Day Grid)</span>
+            </button>
+          </div>
+
+          <div class="flex items-center gap-2 pr-2">
+            <button id="btn-log-streak" class="px-3.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 text-xs font-semibold flex items-center gap-1.5 transition">
+              <span>🔥 Check-In Today</span>
+            </button>
+            <button id="btn-open-add-goal" class="px-4 py-1.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-semibold flex items-center gap-1.5 transition shadow-lg shadow-cyan-600/30">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              <span>Add Goal</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Category Filters Bar -->
+        <div class="glass-card rounded-2xl p-3 border border-slate-800 flex items-center justify-between gap-4">
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <span class="text-[11px] font-mono text-slate-400 uppercase tracking-wider mr-2 font-semibold">Filter:</span>
+            <button class="goal-filter-btn px-3 py-1 rounded-xl text-xs font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 transition" data-filter="All">All Categories</button>
+            <button class="goal-filter-btn px-3 py-1 rounded-xl text-xs font-semibold bg-slate-800/60 text-slate-400 border border-slate-700 transition" data-filter="Backend">Backend / Python</button>
+            <button class="goal-filter-btn px-3 py-1 rounded-xl text-xs font-semibold bg-slate-800/60 text-slate-400 border border-slate-700 transition" data-filter="DSA">DSA & Algorithms</button>
+            <button class="goal-filter-btn px-3 py-1 rounded-xl text-xs font-semibold bg-slate-800/60 text-slate-400 border border-slate-700 transition" data-filter="Web">Web Development</button>
+            <button class="goal-filter-btn px-3 py-1 rounded-xl text-xs font-semibold bg-slate-800/60 text-slate-400 border border-slate-700 transition" data-filter="Completed">Completed</button>
+          </div>
+        </div>
+
+        <!-- Goals Cards Grid / Active Tracker View Target -->
+        <div id="goals-list-container" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <!-- Rendered dynamically by GoalTracker -->
+        </div>
+
+      </section>
+
+      <!-- ================= TAB 3: AI RESUME BUILDER ================= -->
+      <section id="tab-resume" class="tab-pane hidden space-y-6">
+        
+        <div class="glass-card rounded-2xl p-4 border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div>
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <i data-lucide="sparkles" class="w-4 h-4 text-purple-400"></i>
+              <span>Elevora AI Resume Engine (ATS Optimized)</span>
+            </h3>
+            <p class="text-xs text-slate-400">Live split-view editor with action verb enhancer and pixel-perfect PDF export.</p>
+          </div>
+
+          <div class="flex items-center gap-2 flex-wrap">
+            <button id="btn-load-sample-resume" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition flex items-center gap-1.5">
+              <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+              <span>Load Sample Profile</span>
+            </button>
+
+            <button id="btn-toggle-resume-theme" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition flex items-center gap-1.5">
+              <i data-lucide="palette" class="w-3.5 h-3.5 text-cyan-400"></i>
+              <span id="resume-theme-label">Theme: Clean ATS White</span>
+            </button>
+
+            <button id="btn-print-resume" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition flex items-center gap-1.5">
+              <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+              <span>Print</span>
+            </button>
+
+            <button id="btn-download-resume-pdf" class="px-4 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-lg shadow-cyan-600/30">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              <span>Download PDF</span>
+            </button>
+
+            <button id="btn-reset-resume" class="text-slate-500 hover:text-rose-400 p-1.5 rounded-lg transition" title="Clear inputs">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Split Layout: Form on Left, Live Preview on Right -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          
+          <!-- Form Inputs (5 cols) -->
+          <div class="lg:col-span-5 space-y-4 max-h-[850px] overflow-y-auto pr-2">
+            
+            <!-- Personal Info -->
+            <div class="glass-card rounded-2xl p-4 border border-slate-800 space-y-3">
+              <h4 class="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
+                <i data-lucide="user" class="w-3.5 h-3.5"></i>
+                <span>1. Contact & Identity</span>
+              </h4>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="text-[11px] text-slate-400">Full Name</label>
+                  <input type="text" id="res-name" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white" placeholder="e.g. Alex Rivera">
+                </div>
+                <div>
+                  <label class="text-[11px] text-slate-400">Target Role Title</label>
+                  <input type="text" id="res-title" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white" placeholder="e.g. Senior Full Stack Engineer">
+                </div>
+                <div>
+                  <label class="text-[11px] text-slate-400">Email</label>
+                  <input type="email" id="res-email" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white" placeholder="name@domain.com">
+                </div>
+                <div>
+                  <label class="text-[11px] text-slate-400">Phone</label>
+                  <input type="text" id="res-phone" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white" placeholder="+1 (555) 123-4567">
+                </div>
+                <div>
+                  <label class="text-[11px] text-slate-400">Location</label>
+                  <input type="text" id="res-location" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white" placeholder="City, State / Remote">
+                </div>
+                <div>
+                  <label class="text-[11px] text-slate-400">GitHub Profile</label>
+                  <input type="text" id="res-github" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white" placeholder="github.com/username">
+                </div>
+                <div>
+                  <label class="text-[11px] text-slate-400">LinkedIn Profile</label>
+                  <input type="text" id="res-linkedin" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white" placeholder="linkedin.com/in/username">
+                </div>
+                <div>
+                  <label class="text-[11px] text-slate-400">Portfolio Website</label>
+                  <input type="text" id="res-website" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white" placeholder="yourportfolio.io">
+                </div>
+              </div>
+            </div>
+
+            <!-- Professional Summary -->
+            <div class="glass-card rounded-2xl p-4 border border-slate-800 space-y-2">
+              <div class="flex items-center justify-between">
+                <h4 class="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <i data-lucide="align-left" class="w-3.5 h-3.5"></i>
+                  <span>2. Executive Summary</span>
+                </h4>
+                <button id="btn-ai-enhance-summary" class="text-xs text-purple-400 hover:text-purple-300 font-semibold flex items-center gap-1">
+                  <i data-lucide="sparkles" class="w-3 h-3"></i>
+                  <span>✨ AI Generate</span>
+                </button>
+              </div>
+              <textarea id="res-summary" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-200" placeholder="Brief 2-3 sentence overview highlighting your engineering experience and accomplishments..."></textarea>
+            </div>
+
+            <!-- Technical Skills -->
+            <div class="glass-card rounded-2xl p-4 border border-slate-800 space-y-2.5">
+              <h4 class="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
+                <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
+                <span>3. Technical Skills</span>
+              </h4>
+              <div>
+                <label class="text-[11px] text-slate-400">Programming Languages</label>
+                <input type="text" id="res-skills-languages" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white" placeholder="TypeScript, Python, Java, SQL, Go">
+              </div>
+              <div>
+                <label class="text-[11px] text-slate-400">Frameworks & Libraries</label>
+                <input type="text" id="res-skills-frameworks" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white" placeholder="React 19, Next.js, Node.js, Express, FastAPI">
+              </div>
+              <div>
+                <label class="text-[11px] text-slate-400">Cloud & Databases</label>
+                <input type="text" id="res-skills-cloud" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white" placeholder="AWS, Docker, Kubernetes, PostgreSQL, Redis, MongoDB">
+              </div>
+              <div>
+                <label class="text-[11px] text-slate-400">Tools & DevOps</label>
+                <input type="text" id="res-skills-tools" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white" placeholder="Git, GitHub Actions CI/CD, Jest, Linux, Terraform">
+              </div>
+            </div>
+
+            <!-- Experience Section -->
+            <div class="glass-card rounded-2xl p-4 border border-slate-800 space-y-3">
+              <div class="flex items-center justify-between">
+                <h4 class="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <i data-lucide="briefcase" class="w-3.5 h-3.5"></i>
+                  <span>4. Work Experience</span>
+                </h4>
+                <button id="btn-add-experience" class="text-xs text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1">
+                  <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                  <span>Add Job</span>
+                </button>
+              </div>
+              <div id="experience-inputs-container"></div>
+            </div>
+
+            <!-- Projects Section -->
+            <div class="glass-card rounded-2xl p-4 border border-slate-800 space-y-3">
+              <div class="flex items-center justify-between">
+                <h4 class="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <i data-lucide="folder-git-2" class="w-3.5 h-3.5"></i>
+                  <span>5. Featured Projects</span>
+                </h4>
+                <button id="btn-add-project" class="text-xs text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1">
+                  <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                  <span>Add Project</span>
+                </button>
+              </div>
+              <div id="project-inputs-container"></div>
+            </div>
+
+            <!-- Education Section -->
+            <div class="glass-card rounded-2xl p-4 border border-slate-800 space-y-3">
+              <h4 class="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
+                <i data-lucide="graduation-cap" class="w-3.5 h-3.5"></i>
+                <span>6. Education</span>
+              </h4>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="text-[11px] text-slate-400">School / University</label>
+                  <input type="text" id="res-edu-school" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white" placeholder="University of California, Berkeley">
+                </div>
+                <div>
+                  <label class="text-[11px] text-slate-400">Degree & Major</label>
+                  <input type="text" id="res-edu-degree" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white" placeholder="B.S. in Computer Science">
+                </div>
+                <div>
+                  <label class="text-[11px] text-slate-400">Graduation Year</label>
+                  <input type="text" id="res-edu-year" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white" placeholder="2020">
+                </div>
+                <div>
+                  <label class="text-[11px] text-slate-400">GPA / Honors</label>
+                  <input type="text" id="res-edu-gpa" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white" placeholder="3.8 / 4.0">
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Live Resume Preview (7 cols) -->
+          <div class="lg:col-span-7 sticky top-24">
+            <div class="p-2 rounded-2xl bg-slate-900/60 border border-slate-800 max-h-[850px] overflow-y-auto">
+              <div id="resume-paper-wrapper" class="resume-paper rounded-xl shadow-2xl overflow-hidden"></div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================= TAB 4: CHEAT SHEETS & PDF HUB (Req 4) ================= -->
+      <section id="tab-pdf-library" class="tab-pane hidden space-y-6">
+        
+        <!-- Search & Header Bar -->
+        <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <i data-lucide="file-down" class="w-5 h-5 text-cyan-400"></i>
+              <span>Developer Cheat Sheets & Downloadable PDF Hub</span>
+            </h3>
+            <p class="text-xs text-slate-400">Curated reference guides + Upload custom PDFs to read in-app and download anytime!</p>
+          </div>
+
+          <!-- Search input -->
+          <div class="w-full md:w-72">
+            <div class="relative">
+              <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+              <input type="text" id="cheat-sheet-search" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl pl-9 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400" placeholder="Filter by language, title or topic...">
+            </div>
+          </div>
+        </div>
+
+        <!-- Cheat Sheets Grid (Both Uploaded & Curated) -->
+        <div id="cheat-sheet-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Rendered dynamically by PDFLibrary -->
+        </div>
+
+      </section>
+
+      <!-- ================= TAB 5: SKILL BUILDING & DYNAMIC QUIZ (Req 5) ================= -->
+      <section id="tab-skills" class="tab-pane hidden space-y-6">
+        
+        <!-- Intro Banner -->
+        <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-xl">🚀</span>
+              <h3 class="text-base font-bold text-white">Developer Skill Roadmaps & Dynamic AI Quizzes</h3>
+            </div>
+            <p class="text-xs text-slate-400">Select any language and difficulty level (Beginner, Intermediate, Pro) to dynamically generate custom AI coding challenges.</p>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="px-4 py-2 rounded-xl bg-purple-950/50 border border-purple-500/30 text-purple-300 font-mono text-xs font-bold text-center">
+              <span class="text-[10px] text-slate-400 block font-sans">Current Level</span>
+              <span id="skill-level-indicator">Junior Craftsman</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- DYNAMIC AI QUIZ CONFIGURATOR (Req 5) -->
+        <div class="glass-card rounded-2xl p-5 border border-cyan-500/30 bg-gradient-to-r from-slate-900 via-cyan-950/20 to-slate-900 space-y-4">
+          <div class="flex items-center justify-between">
+            <h4 class="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-2">
+              <i data-lucide="sparkles" class="w-4 h-4 text-cyan-300"></i>
+              <span>AI Quiz Generator Setup (Language & Proficiency Level)</span>
+            </h4>
+            <span class="text-[10px] font-mono text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800">
+              AI Dynamic Engine Ready
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+            
+            <!-- Step 1: Select Language -->
+            <div class="md:col-span-4">
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">1. Programming Language / Track</label>
+              <select id="quiz-lang-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-cyan-400">
+                <option value="Python">🐍 Python 3</option>
+                <option value="JavaScript">⚡ JavaScript (ES6+)</option>
+                <option value="TypeScript">🔷 TypeScript</option>
+                <option value="Java">☕ Java 21</option>
+                <option value="C++">⚙️ C++ (Modern STL)</option>
+                <option value="SQL">🗄️ SQL & Databases</option>
+                <option value="React">⚛️ React 19</option>
+                <option value="DSA">🧩 DSA & Algorithms</option>
+              </select>
+            </div>
+
+            <!-- Step 2: Select Proficiency Level (Req 5) -->
+            <div class="md:col-span-5">
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">2. Proficiency Level</label>
+              <div class="grid grid-cols-3 gap-2">
+                <button type="button" class="quiz-level-pill active-level-btn py-2 px-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1 border border-cyan-400" data-level="Beginner">
+                  <span>🟢 Beginner</span>
+                </button>
+                <button type="button" class="quiz-level-pill bg-slate-900 text-slate-400 hover:text-white border border-slate-800 py-2 px-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1" data-level="Intermediate">
+                  <span>🟡 Inter</span>
+                </button>
+                <button type="button" class="quiz-level-pill bg-slate-900 text-slate-400 hover:text-white border border-slate-800 py-2 px-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1" data-level="Pro">
+                  <span>🔴 Pro</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Step 3: Question Count & Generate -->
+            <div class="md:col-span-3 flex items-end gap-2">
+              <div class="w-20">
+                <label class="block text-[11px] font-semibold text-slate-400 mb-1.5">Questions</label>
+                <select id="quiz-count-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-2 text-xs text-white focus:outline-none">
+                  <option value="3">3 Qs</option>
+                  <option value="5" selected>5 Qs</option>
+                  <option value="10">10 Qs</option>
+                </select>
+              </div>
+              <button id="btn-generate-ai-quiz" class="flex-1 py-2 px-3 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-xs font-bold transition shadow-lg shadow-cyan-600/30 flex items-center justify-center gap-1.5 shrink-0">
+                <i data-lucide="sparkles" class="w-4 h-4"></i>
+                <span>Generate</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Interactive Quiz Challenge & Career Roadmaps -->
+        <div class="space-y-6">
+          <div id="quiz-challenge-container">
+            <!-- Rendered dynamically by SkillBuilding -->
+          </div>
+
+          <!-- Roadmaps Tracks -->
+          <div>
+            <h3 class="text-sm font-bold text-slate-200 mb-3 flex items-center gap-2">
+              <i data-lucide="map" class="w-4 h-4 text-cyan-400"></i>
+              <span>Engineering Career Roadmaps</span>
+            </h3>
+            <div id="roadmap-tracks-container" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- ================= FOOTER (Req 2) ================= -->
+    <footer class="glass-nav border-t border-slate-800/80 py-4 px-6 text-center text-xs text-slate-500 mt-12">
+      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+        <div class="flex items-center gap-2 font-mono">
+          <span class="text-cyan-400 font-bold">Elevora AI</span>
+          <span>•</span>
+          <span>All-in-One Developer Hub & Coding Companion</span>
+        </div>
+        <div>
+          <span>Built for high-velocity software engineers</span>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ================= MODAL: "WHAT DO YOU WANT TO DO TODAY?" ================= -->
+  <div id="intent-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="glass-panel rounded-3xl border border-slate-700/80 w-full max-w-2xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+      
+      <button id="btn-close-intent-modal" class="text-slate-400 hover:text-white absolute right-6 top-6 p-1.5 rounded-lg hover:bg-slate-800 transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="text-center mb-6">
+        <div class="inline-flex p-3 rounded-2xl bg-cyan-950/60 border border-cyan-800/50 text-cyan-400 mb-2">
+          <i data-lucide="sparkles" class="w-6 h-6"></i>
+        </div>
+        <h2 id="intent-modal-greeting" class="text-xl sm:text-2xl font-black text-white tracking-tight">
+          Welcome to Elevora! 🚀 What would you like to achieve today?
+        </h2>
+        <p class="text-xs text-slate-400 mt-1">Select an action below to jump straight in, or proceed to your full dashboard.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+        
+        <!-- Card 1: Debug Code -->
+        <div data-tab="assistant" class="intent-action-card p-4 rounded-2xl bg-slate-900/80 hover:bg-cyan-950/30 border border-slate-800 hover:border-cyan-500/50 cursor-pointer transition flex items-start gap-3 group">
+          <div class="p-2.5 rounded-xl bg-cyan-950/60 text-cyan-400 border border-cyan-800/40 group-hover:scale-110 transition shrink-0">
+            <i data-lucide="bug" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-white group-hover:text-cyan-300 transition">Debug or Explain Code</h4>
+            <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Upload code to catch syntax & logic bugs or analyze time complexity.</p>
+          </div>
+        </div>
+
+        <!-- Card 2: Goal Tracker -->
+        <div data-tab="goals" class="intent-action-card p-4 rounded-2xl bg-slate-900/80 hover:bg-emerald-950/30 border border-slate-800 hover:border-emerald-500/50 cursor-pointer transition flex items-start gap-3 group">
+          <div class="p-2.5 rounded-xl bg-emerald-950/60 text-emerald-400 border border-emerald-800/40 group-hover:scale-110 transition shrink-0">
+            <i data-lucide="target" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-white group-hover:text-emerald-300 transition">Day / Week / Month Goal Tracker</h4>
+            <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">AI generates 30-day plans. Check off daily milestones and keep streak.</p>
+          </div>
+        </div>
+
+        <!-- Card 3: AI Resume Builder -->
+        <div data-tab="resume" class="intent-action-card p-4 rounded-2xl bg-slate-900/80 hover:bg-purple-950/30 border border-slate-800 hover:border-purple-500/50 cursor-pointer transition flex items-start gap-3 group">
+          <div class="p-2.5 rounded-xl bg-purple-950/60 text-purple-400 border border-purple-800/40 group-hover:scale-110 transition shrink-0">
+            <i data-lucide="file-badge" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-white group-hover:text-purple-300 transition">Build / Polish AI Resume</h4>
+            <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Enhance bullet points with quantifiable metrics and download PDF.</p>
+          </div>
+        </div>
+
+        <!-- Card 4: Download Cheat Sheets -->
+        <div data-tab="pdf-library" class="intent-action-card p-4 rounded-2xl bg-slate-900/80 hover:bg-blue-950/30 border border-slate-800 hover:border-blue-500/50 cursor-pointer transition flex items-start gap-3 group">
+          <div class="p-2.5 rounded-xl bg-blue-950/60 text-blue-400 border border-blue-800/40 group-hover:scale-110 transition shrink-0">
+            <i data-lucide="download" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-white group-hover:text-blue-300 transition">PDF Cheat Sheets & Uploads</h4>
+            <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Upload custom notes PDFs, read in-app, or download reference guides.</p>
+          </div>
+        </div>
+
+        <!-- Card 5: Skill Building & Dynamic Quiz -->
+        <div data-tab="skills" class="intent-action-card sm:col-span-2 p-4 rounded-2xl bg-slate-900/80 hover:bg-pink-950/30 border border-slate-800 hover:border-pink-500/50 cursor-pointer transition flex items-start gap-3 group">
+          <div class="p-2.5 rounded-xl bg-pink-950/60 text-pink-400 border border-pink-800/40 group-hover:scale-110 transition shrink-0">
+            <i data-lucide="compass" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-white group-hover:text-pink-300 transition">Dynamic AI Coding Quiz (Beginner, Inter, Pro)</h4>
+            <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Generate live questions in Python, JS, Java, C++, SQL tailored to your level!</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="flex justify-center">
+        <button id="btn-intent-to-dashboard" class="px-6 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition flex items-center gap-2">
+          <span>Go Straight to Dashboard</span>
+          <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= MODAL: ADD GOAL & AI DAY-BY-DAY PLANNER (Req 1 & 3) ================= -->
+  <div id="add-goal-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="glass-panel rounded-2xl border border-slate-700 w-full max-w-xl max-h-[90vh] overflow-y-auto p-6 shadow-2xl">
+      <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-800">
+        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+          <i data-lucide="target" class="w-4 h-4 text-cyan-400"></i>
+          <span>Create Goal & AI Day-by-Day Roadmap</span>
+        </h3>
+        <button id="btn-close-goal-modal" class="text-slate-400 hover:text-white p-1 rounded-lg">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <form id="form-add-goal" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Goal Title</label>
+          <input type="text" id="goal-title-input" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400" placeholder="e.g. Master Python Basics & Build Capstone Projects" required>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Category</label>
+            <select id="goal-category-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400">
+              <option value="Backend / Scripting">Backend / Python</option>
+              <option value="DSA & Algorithms">DSA & Algorithms</option>
+              <option value="Web Development">Web Development</option>
+              <option value="DevOps & Cloud">DevOps & Cloud</option>
+              <option value="AI & Machine Learning">AI & Machine Learning</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Priority</label>
+            <select id="goal-priority-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400">
+              <option value="High">High Priority</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- DURATION IN DAYS (Req 1 & 3) -->
+        <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-bold text-cyan-400 font-mono">
+              ⏱️ Duration / Number of Days to Complete (Req 1 & 3)
+            </label>
+            <span class="text-[11px] text-slate-400 font-mono">Target: Day-by-Day Plan</span>
+          </div>
+
+          <div class="flex items-center gap-2 flex-wrap">
+            <button type="button" class="preset-days-btn px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-slate-900 text-slate-400 border border-slate-700 hover:text-white transition" data-days="7">7 Days</button>
+            <button type="button" class="preset-days-btn px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-slate-900 text-slate-400 border border-slate-700 hover:text-white transition" data-days="14">14 Days</button>
+            <button type="button" class="preset-days-btn px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-cyan-600 text-white border border-cyan-400 transition" data-days="30">30 Days</button>
+            <button type="button" class="preset-days-btn px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-slate-900 text-slate-400 border border-slate-700 hover:text-white transition" data-days="60">60 Days</button>
+            <button type="button" class="preset-days-btn px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-slate-900 text-slate-400 border border-slate-700 hover:text-white transition" data-days="90">90 Days</button>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="w-32">
+              <input type="number" id="goal-days-input" min="1" max="120" value="30" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-cyan-400">
+            </div>
+            <div class="flex-1">
+              <input type="date" id="goal-date-input" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-cyan-400">
+            </div>
+          </div>
+
+          <!-- AI AUTO PLANNER TRIGGER BUTTON -->
+          <button type="button" id="btn-ai-generate-plan" class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-lg shadow-purple-600/25">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+            <span>✨ Elevora AI: Generate Day-by-Day Subtasks for Duration</span>
+          </button>
+        </div>
+
+        <!-- Generated Subtasks Checklist -->
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <div class="flex items-center gap-2">
+              <label class="text-xs font-semibold text-slate-300">Daily Subtasks & Milestones</label>
+              <span id="modal-plan-summary-badge" class="hidden text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800"></span>
+            </div>
+            <button type="button" id="btn-add-modal-subtask" class="text-xs text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+              <span>Add Day</span>
+            </button>
+          </div>
+          <div id="modal-subtasks-list" class="space-y-2 max-h-48 overflow-y-auto pr-1">
+            <div class="subtask-item-row flex items-center gap-2 mb-2">
+              <span class="text-[10px] font-mono text-cyan-400 w-14 shrink-0 font-bold">Day 1</span>
+              <input type="text" class="subtask-input flex-1 bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white focus:outline-none focus:border-cyan-400" placeholder="Milestone 1, e.g. Setup & syntax fundamentals" value="Day 1: Setup & syntax fundamentals">
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
+          <button type="button" onclick="document.getElementById('add-goal-modal').classList.add('hidden')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition">Cancel</button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold transition shadow-lg shadow-cyan-600/30">Create Goal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: CHEAT SHEET & PDF VIEWER (Req 4) ================= -->
+  <div id="cheat-sheet-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="glass-panel rounded-2xl border border-slate-700 w-full max-w-4xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="p-4 bg-slate-900 border-b border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <h3 id="cheat-modal-title" class="text-sm font-bold text-white">Cheat Sheet Title</h3>
+          <span id="cheat-modal-version" class="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800">v1.0</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="btn-download-modal-pdf" class="px-3 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-semibold flex items-center gap-1.5 transition">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span>Download PDF</span>
+          </button>
+          <button id="btn-close-cheat-modal" class="text-slate-400 hover:text-white p-1 rounded-lg">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+      <div id="cheat-modal-body" class="p-6 overflow-y-auto space-y-4">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: SETTINGS (GEMINI API KEY) ================= -->
+  <div id="settings-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="glass-panel rounded-2xl border border-slate-700 w-full max-w-md p-6 shadow-2xl">
+      <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-800">
+        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+          <i data-lucide="cpu" class="w-4 h-4 text-cyan-400"></i>
+          <span>Elevora AI Intelligence Settings</span>
+        </h3>
+        <button id="btn-close-settings" class="text-slate-400 hover:text-white p-1 rounded-lg">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="space-y-4 text-xs">
+        <div class="p-3 rounded-xl bg-cyan-950/30 border border-cyan-800/40 text-cyan-200 text-[11px] leading-relaxed">
+          💡 <strong>Works 100% Free by Default:</strong> Elevora includes built-in cloud intelligence and local heuristic analyzers. You can also provide an optional Google Gemini API Key.
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">Google Gemini API Key (Optional)</label>
+          <input type="password" id="setting-gemini-key" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400" placeholder="AIzaSy...">
+          <span class="text-[10px] text-slate-500 mt-1 block">Your API key is stored securely only in your browser's local storage.</span>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">Select Model</label>
+          <select id="setting-gemini-model" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400">
+            <option value="gemini-3.8-flash" selected>Gemini 3.8 Flash (Active & Fastest - Recommended)</option>
+            <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+            <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+            <option value="gemini-1.5-pro">Gemini 1.5 Pro (Deep Code Reasoning)</option>
+          </select>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
+          <button id="btn-save-settings" class="px-5 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold transition shadow-lg shadow-cyan-600/30">Save Settings</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm"></div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/ai-engine.js"></script>
+  <script src="js/code-assistant.js"></script>
+  <script src="js/goal-tracker.js"></script>
+  <script src="js/resume-builder.js"></script>
+  <script src="js/pdf-library.js"></script>
+  <script src="js/skill-building.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

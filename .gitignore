@@ -1,0 +1,5 @@
+
+node_modules
+.env
+elevora.db
+elevora_data.json
